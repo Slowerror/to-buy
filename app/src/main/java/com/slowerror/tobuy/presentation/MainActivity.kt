@@ -1,7 +1,8 @@
-package com.slowerror.tobuy
+package com.slowerror.tobuy.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.slowerror.tobuy.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
