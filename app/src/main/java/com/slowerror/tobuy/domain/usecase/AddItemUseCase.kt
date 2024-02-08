@@ -5,6 +5,6 @@ import com.slowerror.tobuy.domain.repository.ToBuyRepository
 
 class AddItemUseCase(private val toBuyRepository: ToBuyRepository) {
 
-    operator fun invoke(item: Item) = toBuyRepository.insertItem(item)
+    suspend operator fun invoke(item: Item) = toBuyRepository.insertItem(item)
 
 }

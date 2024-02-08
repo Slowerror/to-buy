@@ -5,16 +5,17 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.slowerror.tobuy.data.local.entity.ItemEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ItemDao {
 
     @Query("SELECT * FROM item_entity")
-    fun getAllItemEntities(): List<ItemEntity>
+    fun getAllItemEntities(): Flow<List<ItemEntity>>
 
     @Insert
-    fun insert(itemEntity: ItemEntity)
+    suspend fun insert(itemEntity: ItemEntity)
 
     @Delete
-    fun delete(itemEntity: ItemEntity)
+    suspend fun delete(itemEntity: ItemEntity)
 }

@@ -5,6 +5,6 @@ import com.slowerror.tobuy.domain.repository.ToBuyRepository
 
 class RemoveItemUseCase(private val toBuyRepository: ToBuyRepository) {
 
-    operator fun invoke(item: Item) = toBuyRepository.deleteItem(item)
+    suspend operator fun invoke(item: Item) = toBuyRepository.deleteItem(item)
 
 }

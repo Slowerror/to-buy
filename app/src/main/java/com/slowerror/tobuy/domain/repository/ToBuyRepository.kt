@@ -1,12 +1,13 @@
 package com.slowerror.tobuy.domain.repository
 
 import com.slowerror.tobuy.domain.model.Item
+import kotlinx.coroutines.flow.Flow
 
 interface ToBuyRepository {
 
-    fun getAllItem(): List<Item>
+    fun getAllItem(): Flow<List<Item>>
 
-    fun insertItem(item: Item)
+    suspend fun insertItem(item: Item)
 
-    fun deleteItem(item: Item)
+    suspend fun deleteItem(item: Item)
 }
