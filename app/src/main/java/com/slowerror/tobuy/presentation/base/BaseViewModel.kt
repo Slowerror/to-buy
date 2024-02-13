@@ -1,4 +1,4 @@
-package com.slowerror.tobuy.presentation
+package com.slowerror.tobuy.presentation.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +7,7 @@ import com.slowerror.tobuy.domain.model.Item
 import com.slowerror.tobuy.domain.usecase.AddItemUseCase
 import com.slowerror.tobuy.domain.usecase.GetAllItemUseCase
 import com.slowerror.tobuy.domain.usecase.RemoveItemUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class BaseViewModel(
@@ -19,12 +20,10 @@ class BaseViewModel(
     val itemListLiveData get() = _itemListLiveData
 
     init {
-        viewModelScope.launch {
-            getAllItems()
-        }
+        getAllItems()
     }
 
-    private suspend fun getAllItems() {
+    private fun getAllItems() = viewModelScope.launch {
         getAllItemUseCase().collect { items ->
             _itemListLiveData.postValue(items)
         }
@@ -32,6 +31,7 @@ class BaseViewModel(
 
     fun addItem(item: Item) = viewModelScope.launch {
         addItemUseCase(item)
+        delay(700)
     }
 
     fun removeItem(item: Item) = viewModelScope.launch {

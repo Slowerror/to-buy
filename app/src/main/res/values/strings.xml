@@ -2,4 +2,11 @@
     <string name="app_name">ToBuy</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fab_content_desc">add new item</string>
+    <string name="title_hint_text_field">Title</string>
+    <string name="desc_hint_text_field">Description (optional)</string>
+    <string name="low_priority_radio_button">Low</string>
+    <string name="medium_priority_radio_button">Medium</string>
+    <string name="high_priority_radio_button">High</string>
+    <string name="save_button">save</string>
 </resources>
