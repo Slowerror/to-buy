@@ -1,10 +1,7 @@
-package com.slowerror.tobuy.presentation.home
+package com.slowerror.tobuy.presentation.screens.home
 
 import com.slowerror.tobuy.domain.model.Item
 
 interface ItemOnClickInterface {
-
-    fun onDeleteItem(item: Item)
-
     fun onBumpPriority(item: Item)
 }

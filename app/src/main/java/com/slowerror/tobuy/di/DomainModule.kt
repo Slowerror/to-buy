@@ -1,4 +1,4 @@
-package com.slowerror.tobuy.data.repository.di
+package com.slowerror.tobuy.di
 
 import com.slowerror.tobuy.domain.usecase.AddItemUseCase
 import com.slowerror.tobuy.domain.usecase.GetAllItemUseCase

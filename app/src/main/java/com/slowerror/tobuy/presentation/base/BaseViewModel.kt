@@ -1,5 +1,6 @@
 package com.slowerror.tobuy.presentation.base
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +18,10 @@ class BaseViewModel(
 ) : ViewModel() {
 
     private val _itemListLiveData = MutableLiveData<List<Item>>()
-    val itemListLiveData get() = _itemListLiveData
+    val itemListLiveData get() = _itemListLiveData as LiveData<List<Item>>
+
+    private val _transactionCompletedLiveData = MutableLiveData<Boolean>()
+    val transactionCompletedLiveData get() = _transactionCompletedLiveData as LiveData<Boolean>
 
     init {
         getAllItems()
@@ -31,7 +35,9 @@ class BaseViewModel(
 
     fun addItem(item: Item) = viewModelScope.launch {
         addItemUseCase(item)
-        delay(700)
+
+        _transactionCompletedLiveData.postValue(true)
+
     }
 
     fun removeItem(item: Item) = viewModelScope.launch {

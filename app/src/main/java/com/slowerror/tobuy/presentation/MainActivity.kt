@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         appBarConfig = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController)
+        setupActionBarWithNavController(navController, appBarConfig)
     }
 
     override fun onSupportNavigateUp(): Boolean {

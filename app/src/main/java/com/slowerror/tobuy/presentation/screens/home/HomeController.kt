@@ -1,4 +1,4 @@
-package com.slowerror.tobuy.presentation.home
+package com.slowerror.tobuy.presentation.screens.home
 
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
@@ -59,10 +59,6 @@ class HomeController(
             } else {
                 descriptionTextView.isVisible = true
                 descriptionTextView.text = item.description
-            }
-
-            deleteImageView.setOnClickListener {
-                itemOnClickInterface.onDeleteItem(item)
             }
 
             val color = when (item.priority) {

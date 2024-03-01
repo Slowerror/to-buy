@@ -1,9 +1,10 @@
-package com.slowerror.tobuy.presentation.home
+package com.slowerror.tobuy.presentation.screens.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.airbnb.epoxy.EpoxyTouchHelper
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentHomeBinding
 import com.slowerror.tobuy.domain.model.Item
@@ -13,8 +14,6 @@ class HomeFragment : BaseFragment(), ItemOnClickInterface {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
-//    private val viewModel by viewModel<BaseViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,16 +37,31 @@ class HomeFragment : BaseFragment(), ItemOnClickInterface {
             epoxyController.itemList = itemList as ArrayList<Item>
         }
 
+        EpoxyTouchHelper.initSwiping(binding.epoxyRw)
+            .right()
+            .withTarget(HomeController.ItemEpoxyModel::class.java)
+            .andCallbacks(object :
+                EpoxyTouchHelper.SwipeCallbacks<HomeController.ItemEpoxyModel>() {
+                override fun onSwipeCompleted(
+                    model: HomeController.ItemEpoxyModel?,
+                    itemView: View?,
+                    position: Int,
+                    direction: Int
+                ) {
+                    val itemThatWasRemoved = model?.item ?: return
+                    sharedViewModel.removeItem(itemThatWasRemoved)
+                }
+            })
+    }
 
+    override fun onResume() {
+        super.onResume()
+        hideKeyboard(requireView())
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onDeleteItem(item: Item) {
-        sharedViewModel.removeItem(item)
     }
 
     override fun onBumpPriority(item: Item) {

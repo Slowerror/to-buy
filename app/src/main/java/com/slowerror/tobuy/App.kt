@@ -1,9 +1,9 @@
 package com.slowerror.tobuy
 
 import android.app.Application
-import com.slowerror.tobuy.data.repository.di.appModule
-import com.slowerror.tobuy.data.repository.di.dataModule
-import com.slowerror.tobuy.data.repository.di.domainModule
+import com.slowerror.tobuy.di.appModule
+import com.slowerror.tobuy.di.dataModule
+import com.slowerror.tobuy.di.domainModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
