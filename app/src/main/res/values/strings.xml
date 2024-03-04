@@ -9,4 +9,6 @@
     <string name="medium_priority_radio_button">Medium</string>
     <string name="high_priority_radio_button">High</string>
     <string name="save_button">save</string>
+    <string name="title_empty_state">No Item!</string>
+    <string name="subtitle_empty_state">Use the button bellow to add an item to your list</string>
 </resources>

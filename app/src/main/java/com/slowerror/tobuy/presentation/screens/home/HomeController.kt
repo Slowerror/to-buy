@@ -1,10 +1,12 @@
 package com.slowerror.tobuy.presentation.screens.home
 
+import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyController
 import com.slowerror.tobuy.R
+import com.slowerror.tobuy.databinding.ModelEmptyStateBinding
 import com.slowerror.tobuy.databinding.ModelItemBinding
 import com.slowerror.tobuy.domain.model.Item
 import com.slowerror.tobuy.presentation.epoxy.LoadingEpoxyModel
@@ -36,6 +38,7 @@ class HomeController(
         }
 
         if (itemList.isEmpty()) {
+            EmptyStateItemEpoxyModel().id("Empty_state").addTo(this)
             return
         }
 
@@ -61,7 +64,7 @@ class HomeController(
                 descriptionTextView.text = item.description
             }
 
-            val color = when (item.priority) {
+            val colorRes = when (item.priority) {
                 1 -> android.R.color.holo_green_dark
                 2 -> android.R.color.holo_orange_dark
                 3 -> android.R.color.holo_red_dark
@@ -70,8 +73,9 @@ class HomeController(
 
 
             with(priorityTextView) {
-                setBackgroundColor(ContextCompat.getColor(root.context, color))
-
+                val color = ContextCompat.getColor(root.context, colorRes)
+                setBackgroundColor(color)
+                root.setStrokeColor(ColorStateList.valueOf(color))
                 setOnClickListener {
                     itemOnClickInterface.onBumpPriority(item)
                 }
@@ -79,6 +83,13 @@ class HomeController(
 
         }
 
+    }
+
+    class EmptyStateItemEpoxyModel :
+        ViewBindingKotlinModel<ModelEmptyStateBinding>(R.layout.model_empty_state) {
+            override fun ModelEmptyStateBinding.bind() {
+
+            }
     }
 
 }

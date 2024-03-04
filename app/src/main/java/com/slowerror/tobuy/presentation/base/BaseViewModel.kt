@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.slowerror.tobuy.domain.model.Item
 import com.slowerror.tobuy.domain.usecase.AddItemUseCase
+import com.slowerror.tobuy.domain.usecase.BumpPriorityItemUseCase
 import com.slowerror.tobuy.domain.usecase.GetAllItemUseCase
 import com.slowerror.tobuy.domain.usecase.RemoveItemUseCase
 import kotlinx.coroutines.delay
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 class BaseViewModel(
     private val getAllItemUseCase: GetAllItemUseCase,
     private val removeItemUseCase: RemoveItemUseCase,
-    private val addItemUseCase: AddItemUseCase
+    private val addItemUseCase: AddItemUseCase,
+    private val bumpPriorityItemUseCase: BumpPriorityItemUseCase
 ) : ViewModel() {
 
     private val _itemListLiveData = MutableLiveData<List<Item>>()
@@ -42,5 +44,17 @@ class BaseViewModel(
 
     fun removeItem(item: Item) = viewModelScope.launch {
         removeItemUseCase(item)
+    }
+
+    fun onBumpPriority(item: Item) = viewModelScope.launch {
+        val currentPriority = item.priority
+        var newPriority = currentPriority + 1
+
+        if (newPriority > 3) {
+            newPriority = 1
+        }
+
+        val updateItem = item.copy(priority = newPriority)
+        bumpPriorityItemUseCase(updateItem)
     }
 }

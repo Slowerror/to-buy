@@ -65,6 +65,6 @@ class HomeFragment : BaseFragment(), ItemOnClickInterface {
     }
 
     override fun onBumpPriority(item: Item) {
-        TODO("Not yet implemented")
+        sharedViewModel.onBumpPriority(item)
     }
 }

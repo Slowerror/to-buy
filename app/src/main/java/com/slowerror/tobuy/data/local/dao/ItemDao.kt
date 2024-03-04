@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.slowerror.tobuy.data.local.entity.ItemEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,4 +20,7 @@ interface ItemDao {
 
     @Delete
     suspend fun delete(itemEntity: ItemEntity)
+
+    @Update
+    suspend fun onBumpPriority(itemEntity: ItemEntity)
 }

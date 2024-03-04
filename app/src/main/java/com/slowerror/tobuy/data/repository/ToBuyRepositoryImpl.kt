@@ -35,4 +35,8 @@ class ToBuyRepositoryImpl(
         appDatabase.itemDao().delete(itemMapper.mapToData(item))
     }
 
+    override suspend fun onBumpPriorityItem(item: Item) = withContext(Dispatchers.IO) {
+        appDatabase.itemDao().onBumpPriority(itemMapper.mapToData(item))
+    }
+
 }
