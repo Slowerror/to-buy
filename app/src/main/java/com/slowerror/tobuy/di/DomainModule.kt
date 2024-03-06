@@ -1,7 +1,7 @@
 package com.slowerror.tobuy.di
 
 import com.slowerror.tobuy.domain.usecase.AddItemUseCase
-import com.slowerror.tobuy.domain.usecase.BumpPriorityItemUseCase
+import com.slowerror.tobuy.domain.usecase.UpdateItemUseCase
 import com.slowerror.tobuy.domain.usecase.GetAllItemUseCase
 import com.slowerror.tobuy.domain.usecase.RemoveItemUseCase
 import org.koin.core.module.dsl.factoryOf
@@ -11,5 +11,5 @@ val domainModule = module {
     factoryOf(::GetAllItemUseCase)
     factoryOf(::AddItemUseCase)
     factoryOf(::RemoveItemUseCase)
-    factoryOf(::BumpPriorityItemUseCase)
+    factoryOf(::UpdateItemUseCase)
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.airbnb.epoxy.EpoxyTouchHelper
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentHomeBinding
@@ -66,5 +67,9 @@ class HomeFragment : BaseFragment(), ItemOnClickInterface {
 
     override fun onBumpPriority(item: Item) {
         sharedViewModel.onBumpPriority(item)
+    }
+
+    override fun onItemSelected(item: Item) {
+        navigateTo(HomeFragmentDirections.actionHomeFragmentToAddItemFragment(item.id))
     }
 }

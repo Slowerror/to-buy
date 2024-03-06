@@ -21,6 +21,15 @@
         android:id="@+id/addItemFragment"
         android:name="com.slowerror.tobuy.presentation.screens.add_item.AddItemFragment"
         android:label="Add item"
-        tools:layout="@layout/fragment_add_item" />
+        tools:layout="@layout/fragment_add_item">
+
+        <!--suppress NavigationFile -->
+        <argument
+            android:name="selectedItemId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
+
+    </fragment>
 
 </navigation>

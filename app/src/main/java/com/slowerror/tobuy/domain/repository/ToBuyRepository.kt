@@ -11,5 +11,5 @@ interface ToBuyRepository {
 
     suspend fun deleteItem(item: Item)
 
-    suspend fun onBumpPriorityItem(item: Item)
+    suspend fun updateItem(item: Item)
 }

@@ -4,11 +4,8 @@ import com.slowerror.tobuy.data.local.AppDatabase
 import com.slowerror.tobuy.data.mapper.ItemMapperImpl
 import com.slowerror.tobuy.domain.model.Item
 import com.slowerror.tobuy.domain.repository.ToBuyRepository
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -35,8 +32,8 @@ class ToBuyRepositoryImpl(
         appDatabase.itemDao().delete(itemMapper.mapToData(item))
     }
 
-    override suspend fun onBumpPriorityItem(item: Item) = withContext(Dispatchers.IO) {
-        appDatabase.itemDao().onBumpPriority(itemMapper.mapToData(item))
+    override suspend fun updateItem(item: Item) = withContext(Dispatchers.IO) {
+        appDatabase.itemDao().updateItemEntity(itemMapper.mapToData(item))
     }
 
 }

@@ -1,12 +1,12 @@
 package com.slowerror.tobuy.presentation.epoxy
 
 import com.slowerror.tobuy.R
-import com.slowerror.tobuy.databinding.EpoxyModelLoadingBinding
+import com.slowerror.tobuy.databinding.ModelLoadingStateBinding
 
 class LoadingEpoxyModel :
-    ViewBindingKotlinModel<EpoxyModelLoadingBinding>(R.layout.epoxy_model_loading) {
+    ViewBindingKotlinModel<ModelLoadingStateBinding>(R.layout.model_loading_state) {
 
-    override fun EpoxyModelLoadingBinding.bind() {
+    override fun ModelLoadingStateBinding.bind() {
         // Nothing to do
     }
 }
