@@ -32,4 +32,10 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.slowerror.tobuy.presentation.screens.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
 </navigation>
