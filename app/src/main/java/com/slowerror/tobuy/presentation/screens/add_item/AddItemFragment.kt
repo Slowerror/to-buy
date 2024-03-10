@@ -18,6 +18,8 @@ import com.slowerror.tobuy.presentation.base.BaseFragment
 import kotlinx.coroutines.launch
 import java.util.UUID
 
+private val regexToDefineQuantity = "\\[+\\d+]".toRegex()
+
 class AddItemFragment : BaseFragment() {
 
     private var _binding: FragmentAddItemBinding? = null
@@ -58,7 +60,6 @@ class AddItemFragment : BaseFragment() {
                         return
                     }
 
-                    val regexToDefineQuantity = "\\[+\\d+]".toRegex()
 
                     val newTextTitle = when {
                         progress == 1 -> textTitle.replace(regexToDefineQuantity, "")
@@ -150,6 +151,18 @@ class AddItemFragment : BaseFragment() {
 
                 saveButton.text = resources.getString(R.string.update_button)
                 (requireActivity() as AppCompatActivity).supportActionBar?.title = "Update item"
+
+
+                val titleText = titleEditText.text.toString()
+
+                if (titleText.contains(regexToDefineQuantity)) {
+                    val startIndex = titleText.indexOfLast { it == '[' } + 1
+                    val endIndex = titleText.indexOfLast { it == ']' }
+                    val progressQuantity = titleText.substring(startIndex, endIndex)
+
+                    binding.quantitySeekBar.progress = progressQuantity.toInt()
+                }
+
             }
         }
     }
