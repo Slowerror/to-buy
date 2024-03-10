@@ -2,6 +2,8 @@ package com.slowerror.tobuy.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -32,10 +34,22 @@ class MainActivity : AppCompatActivity() {
         appBarConfig = AppBarConfiguration(setOf(R.id.homeFragment, R.id.profileFragment))
 
         setupActionBarWithNavController(navController, appBarConfig)
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+
         setupWithNavController(
-            findViewById<BottomNavigationView>(R.id.bottomNavigation),
+            bottomNavigationView,
             navController,
         )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (appBarConfig.isTopLevelDestination(destination)) {
+                bottomNavigationView.isVisible = true
+            } else {
+                bottomNavigationView.isGone = true
+            }
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavArgs
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentAddItemBinding
 import com.slowerror.tobuy.domain.model.Item
@@ -50,6 +48,67 @@ class AddItemFragment : BaseFragment() {
             saveItemToDatabase()
         }
 
+        binding.quantitySeekBar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                binding.titleEditText.apply {
+                    val textTitle = text.toString().trim()
+
+                    if (textTitle.isEmpty()) {
+                        return
+                    }
+
+                    val regexToDefineQuantity = "\\[+\\d+]".toRegex()
+
+                    val newTextTitle = when {
+                        progress == 1 -> textTitle.replace(regexToDefineQuantity, "")
+                        textTitle.contains(regexToDefineQuantity) -> textTitle.replace(
+                            regexToDefineQuantity,
+                            "[${progress}]"
+                        )
+
+                        else -> "$textTitle [$progress]"
+                    }
+
+                    setText(newTextTitle)
+                    setSelection(newTextTitle.length)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                val text = binding.titleEditText.text.toString().trim()
+                if (text.isEmpty()) {
+                    binding.titleEditText.text = null
+                    Snackbar.make(view, "Fill in the title!", Snackbar.LENGTH_SHORT).show()
+                    requestFocusOnTitleAndShowKeyboard()
+                }
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+        })
+
+        observeViewModelData()
+        requestFocusOnTitleAndShowKeyboard()
+
+        // Настройки экрана если мы находимся в режиме редактирования
+        loadEditModeScreen()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sharedViewModel.setFalseTransactionCompleted()
+    }
+
+    private fun requestFocusOnTitleAndShowKeyboard() {
+        binding.titleEditText.requestFocus()
+        showKeyboard(binding.titleEditText)
+    }
+
+    private fun observeViewModelData() {
         sharedViewModel.transactionCompletedLiveData.observe(viewLifecycleOwner) { isCompleted ->
             if (isCompleted) {
 
@@ -58,7 +117,7 @@ class AddItemFragment : BaseFragment() {
                     return@observe
                 }
 
-                Toast.makeText(requireContext(), "Item saved!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "Item saved!", Snackbar.LENGTH_SHORT).show()
 
                 binding.apply {
                     titleEditText.text = null
@@ -72,12 +131,9 @@ class AddItemFragment : BaseFragment() {
 
             }
         }
+    }
 
-        binding.titleEditText.requestFocus()
-        showKeyboard(binding.titleEditText)
-
-
-        // Настройки экрана если мы находимся в режиме редактирования
+    private fun loadEditModeScreen() {
         selectedItem?.let { item ->
             isInEditMode = true
 
@@ -92,23 +148,20 @@ class AddItemFragment : BaseFragment() {
                     else -> priorityRadioGroup.check(R.id.RadioButtonHigh)
                 }
 
-                saveButton.text = "Update"
+                saveButton.text = resources.getString(R.string.update_button)
                 (requireActivity() as AppCompatActivity).supportActionBar?.title = "Update item"
             }
         }
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        sharedViewModel.setFalseTransactionCompleted()
     }
 
     private fun saveItemToDatabase() {
         val titleItem = binding.titleEditText.text.toString().trim()
 
         if (titleItem.isEmpty()) {
-            binding.titleTextField.error = "Required Field"
+            binding.apply {
+                titleTextField.error = "Required Field"
+                titleEditText.text = null
+            }
             return
         }
 

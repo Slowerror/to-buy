@@ -28,8 +28,7 @@
                 android:id="@+id/titleEditText"
                 android:layout_width="match_parent"
                 android:inputType="textCapSentences"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -38,11 +37,12 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginVertical="16dp"
             android:hint="@string/desc_hint_text_field"
             app:layout_constraintEnd_toEndOf="@id/titleTextField"
             app:layout_constraintStart_toStartOf="@id/titleTextField"
-            app:layout_constraintTop_toBottomOf="@id/titleTextField">
+            app:layout_constraintTop_toBottomOf="@id/titleTextField"
+            app:layout_constraintBottom_toTopOf="@id/quantityTextView">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descriptionEditText"
@@ -52,16 +52,55 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/quantityTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Quantity"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:paddingVertical="8dp"
+            app:layout_constraintStart_toStartOf="@id/descriptionTextField"
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextField"
+            app:layout_constraintEnd_toEndOf="@id/descriptionTextField"
+            app:layout_constraintBottom_toTopOf="@id/quantitySeekBar" />
+
+        <SeekBar
+            android:id="@+id/quantitySeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:min="1"
+            android:paddingVertical="8dp"
+
+            app:layout_constraintStart_toStartOf="@id/quantityTextView"
+            app:layout_constraintTop_toBottomOf="@id/quantityTextView"
+            app:layout_constraintEnd_toEndOf="@id/quantityTextView"
+            app:layout_constraintBottom_toTopOf="@id/priorityTextView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/priorityTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Priority"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginVertical="8dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintStart_toStartOf="@id/descriptionTextField"
+            app:layout_constraintTop_toBottomOf="@id/quantitySeekBar"
+            app:layout_constraintEnd_toEndOf="@id/descriptionTextField"
+            app:layout_constraintBottom_toTopOf="@id/priorityRadioGroup" />
+
         <RadioGroup
             android:id="@+id/priorityRadioGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:checkedButton="@id/RadioButtonLow"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@id/descriptionTextField"
             app:layout_constraintStart_toStartOf="@id/descriptionTextField"
-            app:layout_constraintTop_toBottomOf="@id/descriptionTextField">
+            app:layout_constraintTop_toBottomOf="@id/priorityTextView">
 
             <RadioButton
                 android:id="@+id/RadioButtonLow"
