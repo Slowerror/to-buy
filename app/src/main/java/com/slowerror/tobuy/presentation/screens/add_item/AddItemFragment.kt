@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -18,7 +19,6 @@ import com.slowerror.tobuy.presentation.base.BaseFragment
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-private val regexToDefineQuantity = "\\[+\\d+]".toRegex()
 
 class AddItemFragment : BaseFragment() {
 
@@ -33,6 +33,7 @@ class AddItemFragment : BaseFragment() {
     }
 
     private var isInEditMode = false
+    private val regexToDefineQuantity = "\\[+(\\w)+]".toRegex()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,9 +124,7 @@ class AddItemFragment : BaseFragment() {
                 binding.apply {
                     titleEditText.text = null
                     titleEditText.requestFocus()
-
                     descriptionEditText.text = null
-
                     priorityRadioGroup.check(R.id.RadioButtonLow)
                 }
 
@@ -160,7 +159,17 @@ class AddItemFragment : BaseFragment() {
                     val endIndex = titleText.indexOfLast { it == ']' }
                     val progressQuantity = titleText.substring(startIndex, endIndex)
 
-                    binding.quantitySeekBar.progress = progressQuantity.toInt()
+                    if (progressQuantity.isDigitsOnly()) {
+                        quantitySeekBar.progress = progressQuantity.toInt()
+                    } else {
+                        Snackbar.make(
+                            requireView(),
+                            "Please, correct the quantity value!",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+
+//                        titleEditText.requestFocus(startIndex)
+                    }
                 }
 
             }

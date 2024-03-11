@@ -36,6 +36,18 @@
         android:id="@+id/profileFragment"
         android:name="com.slowerror.tobuy.presentation.screens.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+
+        <action
+            android:id="@+id/action_profileFragment_to_addCategoryFragment"
+            app:destination="@id/addCategoryFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/addCategoryFragment"
+        android:name="com.slowerror.tobuy.presentation.screens.add_category.AddCategoryFragment"
+        android:label="Add category"
+        tools:layout="@layout/fragment_add_category" />
 
 </navigation>

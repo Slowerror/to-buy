@@ -7,17 +7,17 @@ import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyController
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.ModelEmptyStateBinding
-import com.slowerror.tobuy.databinding.ModelHeaderItemBinding
 import com.slowerror.tobuy.databinding.ModelItemBinding
 import com.slowerror.tobuy.domain.model.Item
 import com.slowerror.tobuy.presentation.epoxy.LoadingEpoxyModel
 import com.slowerror.tobuy.presentation.epoxy.ViewBindingKotlinModel
+import com.slowerror.tobuy.utils.addHeaderModel
 
 class HomeController(
     private val itemOnClickInterface: ItemOnClickInterface
 ) : EpoxyController() {
 
-    var isLoading: Boolean = true
+    private var isLoading: Boolean = true
         set(value) {
             field = value
             if (field) {
@@ -49,11 +49,7 @@ class HomeController(
             .forEach { item ->
                 if (item.priority != currentPriority) {
                     currentPriority = item.priority
-                    val text = getHeaderTextForPriority(currentPriority)
-
-                    HeaderEpoxyModel(text)
-                        .id(text)
-                        .addTo(this)
+                    addHeaderModel(getHeaderTextForPriority(currentPriority))
                 }
 
                 ItemEpoxyModel(item, itemOnClickInterface)
@@ -116,12 +112,6 @@ class HomeController(
         }
     }
 
-    data class HeaderEpoxyModel(val text: String) :
-        ViewBindingKotlinModel<ModelHeaderItemBinding>(R.layout.model_header_item) {
-        override fun ModelHeaderItemBinding.bind() {
-            headerText.text = text
-        }
 
-    }
 
 }

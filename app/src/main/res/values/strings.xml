@@ -12,4 +12,5 @@
     <string name="title_empty_state">No Item!</string>
     <string name="subtitle_empty_state">Use the button bellow to add an item to your list</string>
     <string name="update_button">"Update"</string>
+    <string name="category">Category</string>
 </resources>

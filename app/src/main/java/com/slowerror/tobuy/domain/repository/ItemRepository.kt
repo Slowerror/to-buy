@@ -3,7 +3,7 @@ package com.slowerror.tobuy.domain.repository
 import com.slowerror.tobuy.domain.model.Item
 import kotlinx.coroutines.flow.Flow
 
-interface ToBuyRepository {
+interface ItemRepository {
 
     fun getAllItem(): Flow<List<Item>>
 
