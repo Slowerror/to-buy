@@ -31,8 +31,8 @@ class AddCategoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.transactionCompletedLiveData.observe(viewLifecycleOwner) { isCompleted ->
-            if (isCompleted) {
+        sharedViewModel.transactionCompletedLiveData.observe(viewLifecycleOwner) { event ->
+            event.getContent()?.let {
                 navigateBack()
             }
         }
@@ -65,11 +65,6 @@ class AddCategoryFragment : BaseFragment() {
 
         sharedViewModel.addCategory(newCategory)
 
-    }
-
-    override fun onPause() {
-        super.onPause()
-        sharedViewModel.setFalseTransactionCompleted()
     }
 
     override fun onDestroyView() {

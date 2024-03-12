@@ -33,8 +33,8 @@ class BaseViewModel(
     private val _categoryListLiveData = MutableLiveData<List<Category>>()
     val categoryListLiveData get() = _categoryListLiveData as LiveData<List<Category>>
 
-    private val _transactionCompletedLiveData = MutableLiveData<Boolean>()
-    val transactionCompletedLiveData get() = _transactionCompletedLiveData as LiveData<Boolean>
+    private val _transactionCompletedLiveData = MutableLiveData<Event<Boolean>>()
+    val transactionCompletedLiveData get() = _transactionCompletedLiveData as LiveData<Event<Boolean>>
 
     init {
         getAllItems()
@@ -51,7 +51,7 @@ class BaseViewModel(
     fun addItem(item: Item) = viewModelScope.launch {
         addItemUseCase(item)
 
-        _transactionCompletedLiveData.postValue(true)
+        _transactionCompletedLiveData.postValue(Event(true))
 
     }
 
@@ -62,7 +62,7 @@ class BaseViewModel(
     fun updateItem(item: Item) = viewModelScope.launch {
         updateItemUseCase(item)
 
-        _transactionCompletedLiveData.postValue(true)
+        _transactionCompletedLiveData.postValue(Event(true))
     }
 
     fun onBumpPriority(item: Item) = viewModelScope.launch {
@@ -87,21 +87,21 @@ class BaseViewModel(
 
     fun addCategory(category: Category) = viewModelScope.launch {
         addCategoryUseCase(category)
-        _transactionCompletedLiveData.postValue(true)
+        _transactionCompletedLiveData.postValue(Event(true))
     }
 
     fun removeCategory(category: Category) = viewModelScope.launch {
         removeCategoryUseCase(category)
-        _transactionCompletedLiveData.postValue(true)
+        _transactionCompletedLiveData.postValue(Event(true))
     }
 
     fun updateCategory(category: Category) = viewModelScope.launch {
         updateCategoryUseCase(category)
-        _transactionCompletedLiveData.postValue(true)
+        _transactionCompletedLiveData.postValue(Event(true))
     }
     //endregion CategoryEntity
 
-    fun setFalseTransactionCompleted() {
-        _transactionCompletedLiveData.postValue(false)
-    }
+    /*fun setFalseTransactionCompleted() {
+        _transactionCompletedLiveData.postValue(Event(false))
+    }*/
 }

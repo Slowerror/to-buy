@@ -51,6 +51,17 @@ class AddItemFragment : BaseFragment() {
             saveItemToDatabase()
         }
 
+        settingUpSeekBar()
+
+        observeViewModelData()
+        requestFocusOnTitleAndShowKeyboard()
+
+        // Настройки экрана если мы находимся в режиме редактирования
+        loadEditModeScreen()
+
+    }
+
+    private fun settingUpSeekBar() {
         binding.quantitySeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -81,7 +92,7 @@ class AddItemFragment : BaseFragment() {
                 val text = binding.titleEditText.text.toString().trim()
                 if (text.isEmpty()) {
                     binding.titleEditText.text = null
-                    Snackbar.make(view, "Fill in the title!", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(), "Fill in the title!", Snackbar.LENGTH_SHORT).show()
                     requestFocusOnTitleAndShowKeyboard()
                 }
             }
@@ -91,18 +102,6 @@ class AddItemFragment : BaseFragment() {
             }
 
         })
-
-        observeViewModelData()
-        requestFocusOnTitleAndShowKeyboard()
-
-        // Настройки экрана если мы находимся в режиме редактирования
-        loadEditModeScreen()
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        sharedViewModel.setFalseTransactionCompleted()
     }
 
     private fun requestFocusOnTitleAndShowKeyboard() {
@@ -111,9 +110,8 @@ class AddItemFragment : BaseFragment() {
     }
 
     private fun observeViewModelData() {
-        sharedViewModel.transactionCompletedLiveData.observe(viewLifecycleOwner) { isCompleted ->
-            if (isCompleted) {
-
+        sharedViewModel.transactionCompletedLiveData.observe(viewLifecycleOwner) { event ->
+            event.getContent()?.let {
                 if (isInEditMode) {
                     navigateBack()
                     return@observe
@@ -127,8 +125,6 @@ class AddItemFragment : BaseFragment() {
                     descriptionEditText.text = null
                     priorityRadioGroup.check(R.id.RadioButtonLow)
                 }
-
-
             }
         }
     }
