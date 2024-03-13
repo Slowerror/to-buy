@@ -3,6 +3,7 @@ package com.slowerror.tobuy.di
 import com.slowerror.tobuy.data.local.AppDatabase
 import com.slowerror.tobuy.data.mapper.CategoryMapperImpl
 import com.slowerror.tobuy.data.mapper.ItemMapperImpl
+import com.slowerror.tobuy.data.mapper.ItemWithCategoryMapperImpl
 import com.slowerror.tobuy.data.repository.CategoryRepositoryImpl
 import com.slowerror.tobuy.data.repository.ItemRepositoryImpl
 import com.slowerror.tobuy.domain.repository.CategoryRepository
@@ -22,4 +23,6 @@ val dataModule = module {
 
     singleOf(::CategoryRepositoryImpl) { bind<CategoryRepository>() }
     singleOf(::CategoryMapperImpl)
+
+    singleOf(::ItemWithCategoryMapperImpl)
 }

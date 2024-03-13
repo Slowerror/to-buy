@@ -5,8 +5,11 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
+import com.slowerror.tobuy.data.local.entity.CategoryEntity
 import com.slowerror.tobuy.data.local.entity.ItemEntity
+import com.slowerror.tobuy.data.local.entity.ItemWithCategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,6 +17,10 @@ interface ItemDao {
 
     @Query("SELECT * FROM item_entity")
     fun getAllItemEntities(): Flow<List<ItemEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM item_entity")
+    fun getItemWithCategoryEntities() : Flow<List<ItemWithCategoryEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(itemEntity: ItemEntity)

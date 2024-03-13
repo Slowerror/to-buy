@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.slowerror.tobuy.domain.model.Category
 import com.slowerror.tobuy.domain.model.Item
+import com.slowerror.tobuy.domain.model.ItemWithCategory
 import com.slowerror.tobuy.domain.usecase.category_usecase.AddCategoryUseCase
 import com.slowerror.tobuy.domain.usecase.category_usecase.GetAllCategoryUseCase
 import com.slowerror.tobuy.domain.usecase.category_usecase.RemoveCategoryUseCase
@@ -13,6 +14,7 @@ import com.slowerror.tobuy.domain.usecase.category_usecase.UpdateCategoryUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.AddItemUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.UpdateItemUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.GetAllItemUseCase
+import com.slowerror.tobuy.domain.usecase.item_usecase.GetAllItemWithCategoryUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.RemoveItemUseCase
 import kotlinx.coroutines.launch
 
@@ -21,6 +23,7 @@ class BaseViewModel(
     private val removeItemUseCase: RemoveItemUseCase,
     private val addItemUseCase: AddItemUseCase,
     private val updateItemUseCase: UpdateItemUseCase,
+    private val getAllItemWithCategoryUseCase: GetAllItemWithCategoryUseCase,
     private val getAllCategoryUseCase: GetAllCategoryUseCase,
     private val removeCategoryUseCase: RemoveCategoryUseCase,
     private val addCategoryUseCase: AddCategoryUseCase,
@@ -33,18 +36,28 @@ class BaseViewModel(
     private val _categoryListLiveData = MutableLiveData<List<Category>>()
     val categoryListLiveData get() = _categoryListLiveData as LiveData<List<Category>>
 
+    private val _itemListWithCategoryLiveData = MutableLiveData<List<ItemWithCategory>>()
+    val itemListWithCategoryLiveData get() = _itemListWithCategoryLiveData as LiveData<List<ItemWithCategory>>
+
     private val _transactionCompletedLiveData = MutableLiveData<Event<Boolean>>()
     val transactionCompletedLiveData get() = _transactionCompletedLiveData as LiveData<Event<Boolean>>
 
     init {
         getAllItems()
         getAllCategories()
+        getAllItemWithCategory()
     }
 
     //region ItemEntity
     private fun getAllItems() = viewModelScope.launch {
         getAllItemUseCase().collect { items ->
             _itemListLiveData.postValue(items)
+        }
+    }
+
+    private fun getAllItemWithCategory() = viewModelScope.launch {
+        getAllItemWithCategoryUseCase().collect {map ->
+            _itemListWithCategoryLiveData.postValue(map)
         }
     }
 
@@ -100,8 +113,4 @@ class BaseViewModel(
         _transactionCompletedLiveData.postValue(Event(true))
     }
     //endregion CategoryEntity
-
-    /*fun setFalseTransactionCompleted() {
-        _transactionCompletedLiveData.postValue(Event(false))
-    }*/
 }

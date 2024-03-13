@@ -1,18 +1,12 @@
 package com.slowerror.tobuy.presentation.screens.add_category
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentAddCategoryBinding
 import com.slowerror.tobuy.domain.model.Category
 import com.slowerror.tobuy.presentation.base.BaseFragment
-import kotlinx.coroutines.launch
 import java.util.UUID
 
 class AddCategoryFragment : BaseFragment() {
