@@ -24,5 +24,5 @@ val dataModule = module {
     singleOf(::CategoryRepositoryImpl) { bind<CategoryRepository>() }
     singleOf(::CategoryMapperImpl)
 
-    singleOf(::ItemWithCategoryMapperImpl)
+//    singleOf(::ItemWithCategoryMapperImpl)
 }

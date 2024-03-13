@@ -2,6 +2,7 @@ package com.slowerror.tobuy.data.mapper
 
 import com.slowerror.tobuy.data.local.entity.CategoryEntity
 import com.slowerror.tobuy.data.local.entity.ItemWithCategoryEntity
+import com.slowerror.tobuy.domain.model.Category
 import com.slowerror.tobuy.domain.model.ItemWithCategory
 
 class ItemWithCategoryMapperImpl(

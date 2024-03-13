@@ -18,9 +18,12 @@ interface ItemDao {
     @Query("SELECT * FROM item_entity")
     fun getAllItemEntities(): Flow<List<ItemEntity>>
 
-    @Transaction
+    /*@Transaction
     @Query("SELECT * FROM item_entity")
-    fun getItemWithCategoryEntities() : Flow<List<ItemWithCategoryEntity>>
+    fun getItemWithCategoryEntities(): Flow<List<ItemWithCategoryEntity>>*/
+
+    @Query("SELECT * FROM item_entity LEFT JOIN category_entity ON category_id = category_entity.id")
+    fun getItemWithCategoryEntities(): Flow<Map<ItemEntity, CategoryEntity?>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(itemEntity: ItemEntity)

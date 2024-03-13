@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.airbnb.epoxy.EpoxyTouchHelper
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentHomeBinding
