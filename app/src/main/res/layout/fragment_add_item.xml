@@ -14,7 +14,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/titleTextField"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
@@ -27,8 +27,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titleEditText"
                 android:layout_width="match_parent"
-                android:inputType="textCapSentences"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -39,16 +39,16 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
             android:hint="@string/desc_hint_text_field"
+            app:layout_constraintBottom_toTopOf="@id/quantityTextView"
             app:layout_constraintEnd_toEndOf="@id/titleTextField"
             app:layout_constraintStart_toStartOf="@id/titleTextField"
-            app:layout_constraintTop_toBottomOf="@id/titleTextField"
-            app:layout_constraintBottom_toTopOf="@id/quantityTextView">
+            app:layout_constraintTop_toBottomOf="@id/titleTextField">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descriptionEditText"
                 android:layout_width="match_parent"
-                android:inputType="textCapSentences"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,14 +56,14 @@
             android:id="@+id/quantityTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Quantity"
-            android:textStyle="bold"
-            android:textSize="18sp"
             android:paddingVertical="8dp"
-            app:layout_constraintStart_toStartOf="@id/descriptionTextField"
-            app:layout_constraintTop_toBottomOf="@id/descriptionTextField"
+            android:text="@string/quantity"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/quantitySeekBar"
             app:layout_constraintEnd_toEndOf="@id/descriptionTextField"
-            app:layout_constraintBottom_toTopOf="@id/quantitySeekBar" />
+            app:layout_constraintStart_toStartOf="@id/descriptionTextField"
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextField" />
 
         <SeekBar
             android:id="@+id/quantitySeekBar"
@@ -72,24 +72,52 @@
             android:max="10"
             android:min="1"
             android:paddingVertical="8dp"
-            app:layout_constraintStart_toStartOf="@id/quantityTextView"
-            app:layout_constraintTop_toBottomOf="@id/quantityTextView"
+            app:layout_constraintBottom_toTopOf="@id/categoryTextView"
             app:layout_constraintEnd_toEndOf="@id/quantityTextView"
-            app:layout_constraintBottom_toTopOf="@id/priorityTextView" />
+            app:layout_constraintStart_toStartOf="@id/quantityTextView"
+            app:layout_constraintTop_toBottomOf="@id/quantityTextView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/categoryTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:paddingVertical="8dp"
+            android:text="@string/category"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/categoryRw"
+            app:layout_constraintEnd_toEndOf="@id/descriptionTextField"
+            app:layout_constraintStart_toStartOf="@id/descriptionTextField"
+            app:layout_constraintTop_toBottomOf="@id/quantitySeekBar" />
+
+        <com.airbnb.epoxy.EpoxyRecyclerView
+            android:id="@+id/categoryRw"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clipChildren="false"
+            android:paddingVertical="8dp"
+            app:itemSpacing="8dp"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:layout_constraintEnd_toEndOf="@id/descriptionTextField"
+            app:layout_constraintStart_toStartOf="@id/descriptionTextField"
+            app:layout_constraintTop_toBottomOf="@id/categoryTextView"
+            app:spanCount="2" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/priorityTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Priority"
-            android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_marginVertical="8dp"
             android:paddingVertical="8dp"
-            app:layout_constraintStart_toStartOf="@id/descriptionTextField"
-            app:layout_constraintTop_toBottomOf="@id/quantitySeekBar"
+            android:text="@string/priority"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/priorityRadioGroup"
             app:layout_constraintEnd_toEndOf="@id/descriptionTextField"
-            app:layout_constraintBottom_toTopOf="@id/priorityRadioGroup" />
+            app:layout_constraintStart_toStartOf="@id/descriptionTextField"
+            app:layout_constraintTop_toBottomOf="@id/categoryRw" />
 
         <RadioGroup
             android:id="@+id/priorityRadioGroup"

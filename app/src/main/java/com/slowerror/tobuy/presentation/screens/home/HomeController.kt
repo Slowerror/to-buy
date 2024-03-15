@@ -9,6 +9,7 @@ import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.ModelEmptyStateBinding
 import com.slowerror.tobuy.databinding.ModelItemBinding
 import com.slowerror.tobuy.domain.model.Item
+import com.slowerror.tobuy.domain.model.ItemWithCategory
 import com.slowerror.tobuy.presentation.epoxy.LoadingEpoxyModel
 import com.slowerror.tobuy.presentation.epoxy.ViewBindingKotlinModel
 import com.slowerror.tobuy.utils.addHeaderModel
@@ -25,7 +26,7 @@ class HomeController(
             }
         }
 
-    var itemList = ArrayList<Item>()
+    var itemList = ArrayList<ItemWithCategory>()
         set(value) {
             field = value
             isLoading = false
@@ -45,15 +46,15 @@ class HomeController(
 
         var currentPriority = -1
 
-        itemList.sortedByDescending { it.priority }
+        itemList.sortedByDescending { it.item.priority }
             .forEach { item ->
-                if (item.priority != currentPriority) {
-                    currentPriority = item.priority
+                if (item.item.priority != currentPriority) {
+                    currentPriority = item.item.priority
                     addHeaderModel(getHeaderTextForPriority(currentPriority))
                 }
 
-                ItemEpoxyModel(item, itemOnClickInterface)
-                    .id(item.id)
+                ItemEpoxyModel(item.item, itemOnClickInterface)
+                    .id(item.item.id)
                     .addTo(this)
             }
     }
@@ -107,9 +108,7 @@ class HomeController(
 
     class EmptyStateItemEpoxyModel :
         ViewBindingKotlinModel<ModelEmptyStateBinding>(R.layout.model_empty_state) {
-        override fun ModelEmptyStateBinding.bind() {
-
-        }
+        override fun ModelEmptyStateBinding.bind() {}
     }
 
 

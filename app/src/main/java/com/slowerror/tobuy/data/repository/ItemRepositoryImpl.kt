@@ -1,10 +1,8 @@
 package com.slowerror.tobuy.data.repository
 
 import com.slowerror.tobuy.data.local.AppDatabase
-import com.slowerror.tobuy.data.local.entity.CategoryEntity
 import com.slowerror.tobuy.data.mapper.CategoryMapperImpl
 import com.slowerror.tobuy.data.mapper.ItemMapperImpl
-import com.slowerror.tobuy.data.mapper.ItemWithCategoryMapperImpl
 import com.slowerror.tobuy.domain.model.Category
 import com.slowerror.tobuy.domain.model.Item
 import com.slowerror.tobuy.domain.model.ItemWithCategory
@@ -28,16 +26,6 @@ class ItemRepositoryImpl(
                 list.map { itemMapper.mapToDomain(it) }
             }
 
-    // Через Дополнительный Дата класс и Транзакцию
-    /*override fun getAllItemWithCategory(): Flow<List<ItemWithCategory>> =
-        appDatabase.itemDao().getItemWithCategoryEntities()
-            .flowOn(Dispatchers.IO)
-            .map { list ->
-                list.map {
-                    itemWithCategoryMapper.mapToDomain(it)
-                }
-            }*/
-
     override fun getAllItemWithCategory(): Flow<List<ItemWithCategory>> {
         return appDatabase.itemDao().getItemWithCategoryEntities()
             .flowOn(Dispatchers.IO)
@@ -45,7 +33,9 @@ class ItemRepositoryImpl(
                 it.map { entry ->
                     ItemWithCategory(
                         itemMapper.mapToDomain(entry.key),
-                        categoryMapper.mapToDomain(entry.value ?: CategoryEntity("", ""))
+                        entry.value?.let { categoryEntity ->
+                            categoryMapper.mapToDomain(categoryEntity)
+                        } ?: Category.getDefaultCategory()
                     )
                 }
             }

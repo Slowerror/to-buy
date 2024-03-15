@@ -13,4 +13,6 @@
     <string name="subtitle_empty_state">Use the button bellow to add an item to your list</string>
     <string name="update_button">"Update"</string>
     <string name="category">Category</string>
+    <string name="quantity">Quantity</string>
+    <string name="priority">Priority</string>
 </resources>

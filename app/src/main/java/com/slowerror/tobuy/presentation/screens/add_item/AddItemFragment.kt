@@ -11,10 +11,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import com.airbnb.epoxy.EpoxyController
 import com.google.android.material.snackbar.Snackbar
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentAddItemBinding
+import com.slowerror.tobuy.domain.model.Category
 import com.slowerror.tobuy.domain.model.Item
+import com.slowerror.tobuy.domain.model.ItemWithCategory
 import com.slowerror.tobuy.presentation.base.BaseFragment
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -26,9 +29,9 @@ class AddItemFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val safeArgs: AddItemFragmentArgs by navArgs()
-    private val selectedItem: Item? by lazy {
-        sharedViewModel.itemListLiveData.value?.find {
-            it.id == safeArgs.selectedItemId
+    private val selectedItem: ItemWithCategory? by lazy {
+        sharedViewModel.itemListWithCategoryLiveData.value?.find {
+            it.item.id == safeArgs.selectedItemId
         }
     }
 
@@ -59,6 +62,18 @@ class AddItemFragment : BaseFragment() {
         // Настройки экрана если мы находимся в режиме редактирования
         loadEditModeScreen()
 
+        val categoryViewStateController = CategoryViewStateController { categoryId ->
+            sharedViewModel.onCategorySelected(categoryId)
+        }
+
+        binding.categoryRw.setController(categoryViewStateController)
+        sharedViewModel.onCategorySelected(
+            categoryId = selectedItem?.category?.id ?: Category.DEFAULT_CATEGORY_ID,
+            isShowLoading = true
+        )
+        sharedViewModel.categoriesViewStateLiveData.observe(viewLifecycleOwner) { state ->
+            categoryViewStateController.categoriesViewState = state
+        }
     }
 
     private fun settingUpSeekBar() {
@@ -97,9 +112,7 @@ class AddItemFragment : BaseFragment() {
                 }
             }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
-            }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 
         })
     }
@@ -121,9 +134,12 @@ class AddItemFragment : BaseFragment() {
 
                 binding.apply {
                     titleEditText.text = null
-                    titleEditText.requestFocus()
+                    requestFocusOnTitleAndShowKeyboard()
                     descriptionEditText.text = null
+                    quantitySeekBar.setProgress(1, true)
                     priorityRadioGroup.check(R.id.RadioButtonLow)
+
+                    sharedViewModel.onCategorySelected(categoryId = Category.DEFAULT_CATEGORY_ID)
                 }
             }
         }
@@ -134,11 +150,11 @@ class AddItemFragment : BaseFragment() {
             isInEditMode = true
 
             binding.apply {
-                titleEditText.setText(item.title)
-                titleEditText.setSelection(item.title.length)
-                descriptionEditText.setText(item.description)
+                titleEditText.setText(item.item.title)
+                titleEditText.setSelection(item.item.title.length)
+                descriptionEditText.setText(item.item.description)
 
-                when (item.priority) {
+                when (item.item.priority) {
                     1 -> priorityRadioGroup.check(R.id.RadioButtonLow)
                     2 -> priorityRadioGroup.check(R.id.RadioButtonMedium)
                     else -> priorityRadioGroup.check(R.id.RadioButtonHigh)
@@ -168,6 +184,7 @@ class AddItemFragment : BaseFragment() {
                     }
                 }
 
+
             }
         }
     }
@@ -187,6 +204,9 @@ class AddItemFragment : BaseFragment() {
 
         val descriptionItem = binding.descriptionEditText.text.toString().trim()
 
+        val selectedCategoryId =
+            sharedViewModel.categoriesViewStateLiveData.value?.getSelectedCategoryId() ?: return
+
         val priorityItem = when (binding.priorityRadioGroup.checkedRadioButtonId) {
             R.id.RadioButtonLow -> 1
             R.id.RadioButtonMedium -> 2
@@ -196,10 +216,11 @@ class AddItemFragment : BaseFragment() {
 
         if (isInEditMode) {
             selectedItem?.let {
-                val updateItem = it.copy(
+                val updateItem = it.item.copy(
                     title = titleItem,
                     description = descriptionItem,
-                    priority = priorityItem
+                    priority = priorityItem,
+                    categoryId = selectedCategoryId
                 )
 
                 sharedViewModel.updateItem(updateItem)
@@ -214,7 +235,7 @@ class AddItemFragment : BaseFragment() {
             description = descriptionItem,
             priority = priorityItem,
             createdAt = System.currentTimeMillis(),
-            categoryId = ""
+            categoryId = selectedCategoryId
         )
 
         viewLifecycleOwner.lifecycleScope.launch {

@@ -30,20 +30,29 @@ class BaseViewModel(
     private val updateCategoryUseCase: UpdateCategoryUseCase
 ) : ViewModel() {
 
-    private val _itemListLiveData = MutableLiveData<List<Item>>()
-    val itemListLiveData get() = _itemListLiveData as LiveData<List<Item>>
+    /*private val _itemListLiveData = MutableLiveData<List<Item>>()
+    val itemListLiveData: LiveData<List<Item>>
+        get() = _itemListLiveData*/
 
     private val _categoryListLiveData = MutableLiveData<List<Category>>()
-    val categoryListLiveData get() = _categoryListLiveData as LiveData<List<Category>>
+    val categoryListLiveData: LiveData<List<Category>>
+        get() = _categoryListLiveData
 
     private val _itemListWithCategoryLiveData = MutableLiveData<List<ItemWithCategory>>()
-    val itemListWithCategoryLiveData get() = _itemListWithCategoryLiveData as LiveData<List<ItemWithCategory>>
+    val itemListWithCategoryLiveData: LiveData<List<ItemWithCategory>>
+        get() = _itemListWithCategoryLiveData
+
+    private val _categoriesViewStateLiveData =
+        MutableLiveData(CategoriesViewState())
+    val categoriesViewStateLiveData: LiveData<CategoriesViewState>
+        get() = _categoriesViewStateLiveData
 
     private val _transactionCompletedLiveData = MutableLiveData<Event<Boolean>>()
-    val transactionCompletedLiveData get() = _transactionCompletedLiveData as LiveData<Event<Boolean>>
+    val transactionCompletedLiveData: LiveData<Event<Boolean>>
+        get() = _transactionCompletedLiveData
 
     init {
-        getAllItems()
+//        getAllItems()
         getAllCategories()
         getAllItemWithCategory()
     }
@@ -51,12 +60,12 @@ class BaseViewModel(
     //region ItemEntity
     private fun getAllItems() = viewModelScope.launch {
         getAllItemUseCase().collect { items ->
-            _itemListLiveData.postValue(items)
+//            _itemListLiveData.postValue(items)
         }
     }
 
     private fun getAllItemWithCategory() = viewModelScope.launch {
-        getAllItemWithCategoryUseCase().collect {map ->
+        getAllItemWithCategoryUseCase().collect { map ->
             _itemListWithCategoryLiveData.postValue(map)
         }
     }
@@ -113,4 +122,33 @@ class BaseViewModel(
         _transactionCompletedLiveData.postValue(Event(true))
     }
     //endregion CategoryEntity
+
+    fun onCategorySelected(categoryId: String, isShowLoading: Boolean = false) {
+        if (isShowLoading) {
+            val loadingViewState = CategoriesViewState(isLoading = true)
+            _categoriesViewStateLiveData.value = loadingViewState
+        }
+
+        val categories = _categoryListLiveData.value ?: return
+        val viewStateItemList = ArrayList<CategoriesViewState.CategoryItem>()
+
+        viewStateItemList.add(
+            CategoriesViewState.CategoryItem(
+                category = Category.getDefaultCategory(),
+                isSelected = categoryId == Category.DEFAULT_CATEGORY_ID
+            )
+        )
+
+        categories.forEach {
+            viewStateItemList.add(
+                CategoriesViewState.CategoryItem(
+                    category = it,
+                    isSelected = it.id == categoryId
+                )
+            )
+        }
+
+        val viewState = CategoriesViewState(categoryItemList = viewStateItemList)
+        _categoriesViewStateLiveData.postValue(viewState)
+    }
 }

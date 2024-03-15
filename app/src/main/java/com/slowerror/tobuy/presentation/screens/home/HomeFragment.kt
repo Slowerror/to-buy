@@ -9,6 +9,7 @@ import com.airbnb.epoxy.EpoxyTouchHelper
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentHomeBinding
 import com.slowerror.tobuy.domain.model.Item
+import com.slowerror.tobuy.domain.model.ItemWithCategory
 import com.slowerror.tobuy.presentation.base.BaseFragment
 
 class HomeFragment : BaseFragment(), ItemOnClickInterface {
@@ -34,12 +35,12 @@ class HomeFragment : BaseFragment(), ItemOnClickInterface {
         val epoxyController = HomeController(this)
         binding.epoxyRw.setController(epoxyController)
 
-        sharedViewModel.itemListLiveData.observe(viewLifecycleOwner) { itemList ->
+        /*sharedViewModel.itemListLiveData.observe(viewLifecycleOwner) { itemList ->
             epoxyController.itemList = itemList as ArrayList<Item>
-        }
+        }*/
 
         sharedViewModel.itemListWithCategoryLiveData.observe(viewLifecycleOwner) { itemList ->
-            Log.i("ItemWithCategory", "$itemList")
+            epoxyController.itemList = itemList as ArrayList<ItemWithCategory>
         }
 
         EpoxyTouchHelper.initSwiping(binding.epoxyRw)
