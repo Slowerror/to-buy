@@ -8,6 +8,7 @@ import com.airbnb.epoxy.EpoxyController
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.ModelEmptyStateBinding
 import com.slowerror.tobuy.databinding.ModelItemBinding
+import com.slowerror.tobuy.domain.model.Category
 import com.slowerror.tobuy.domain.model.Item
 import com.slowerror.tobuy.domain.model.ItemWithCategory
 import com.slowerror.tobuy.presentation.epoxy.LoadingEpoxyModel
@@ -53,7 +54,7 @@ class HomeController(
                     addHeaderModel(getHeaderTextForPriority(currentPriority))
                 }
 
-                ItemEpoxyModel(item.item, itemOnClickInterface)
+                ItemEpoxyModel(item, itemOnClickInterface)
                     .id(item.item.id)
                     .addTo(this)
             }
@@ -68,21 +69,24 @@ class HomeController(
     }
 
     data class ItemEpoxyModel(
-        val item: Item,
+        val item: ItemWithCategory,
         val itemOnClickInterface: ItemOnClickInterface
     ) : ViewBindingKotlinModel<ModelItemBinding>(R.layout.model_item) {
 
         override fun ModelItemBinding.bind() {
-            titleTextView.text = item.title
+            titleTextView.text = item.item.title
 
-            if (item.description == null) {
+            if (item.item.description == null) {
                 descriptionTextView.isGone = true
             } else {
                 descriptionTextView.isVisible = true
-                descriptionTextView.text = item.description
+                descriptionTextView.text = item.item.description
             }
 
-            val colorRes = when (item.priority) {
+            categoryTextView.text =
+                if (item.category.id == Category.DEFAULT_CATEGORY_ID) "" else item.category.name
+
+            val colorRes = when (item.item.priority) {
                 1 -> android.R.color.holo_green_dark
                 2 -> android.R.color.holo_orange_dark
                 3 -> android.R.color.holo_red_dark
@@ -95,12 +99,12 @@ class HomeController(
                 setBackgroundColor(color)
                 root.setStrokeColor(ColorStateList.valueOf(color))
                 setOnClickListener {
-                    itemOnClickInterface.onBumpPriority(item)
+                    itemOnClickInterface.onBumpPriority(item.item)
                 }
             }
 
             root.setOnClickListener {
-                itemOnClickInterface.onItemSelected(item)
+                itemOnClickInterface.onItemSelected(item.item)
             }
         }
 
@@ -110,7 +114,6 @@ class HomeController(
         ViewBindingKotlinModel<ModelEmptyStateBinding>(R.layout.model_empty_state) {
         override fun ModelEmptyStateBinding.bind() {}
     }
-
 
 
 }

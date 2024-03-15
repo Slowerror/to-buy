@@ -48,6 +48,7 @@
                 android:id="@+id/descriptionEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
                 android:inputType="textCapSentences" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -95,8 +96,8 @@
             android:id="@+id/categoryRw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:clipChildren="false"
+            android:orientation="horizontal"
             android:paddingVertical="8dp"
             app:itemSpacing="8dp"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"

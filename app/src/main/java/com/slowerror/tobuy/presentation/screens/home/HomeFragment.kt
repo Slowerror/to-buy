@@ -35,10 +35,6 @@ class HomeFragment : BaseFragment(), ItemOnClickInterface {
         val epoxyController = HomeController(this)
         binding.epoxyRw.setController(epoxyController)
 
-        /*sharedViewModel.itemListLiveData.observe(viewLifecycleOwner) { itemList ->
-            epoxyController.itemList = itemList as ArrayList<Item>
-        }*/
-
         sharedViewModel.itemListWithCategoryLiveData.observe(viewLifecycleOwner) { itemList ->
             epoxyController.itemList = itemList as ArrayList<ItemWithCategory>
         }
@@ -55,7 +51,7 @@ class HomeFragment : BaseFragment(), ItemOnClickInterface {
                     direction: Int
                 ) {
                     val itemThatWasRemoved = model?.item ?: return
-                    sharedViewModel.removeItem(itemThatWasRemoved)
+                    sharedViewModel.removeItem(itemThatWasRemoved.item)
                 }
             })
     }
