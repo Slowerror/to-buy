@@ -13,9 +13,9 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/nameCategoryTextView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:padding="8dp"
+        android:padding= "8dp"
         android:textColor="?attr/colorSecondary"
         android:textSize="18sp"
         tools:text="Category name" />

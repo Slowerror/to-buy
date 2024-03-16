@@ -15,4 +15,5 @@
     <string name="category">Category</string>
     <string name="quantity">Quantity</string>
     <string name="priority">Priority</string>
+    <string name="exclamation_mark">!</string>
 </resources>

@@ -16,6 +16,9 @@ import com.slowerror.tobuy.domain.usecase.item_usecase.UpdateItemUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.GetAllItemUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.GetAllItemWithCategoryUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.RemoveItemUseCase
+import com.slowerror.tobuy.presentation.screens.home.HomeController
+import com.slowerror.tobuy.presentation.screens.home.HomeViewState
+import com.slowerror.tobuy.utils.addHeaderModel
 import kotlinx.coroutines.launch
 
 class BaseViewModel(
@@ -42,10 +45,22 @@ class BaseViewModel(
     val itemListWithCategoryLiveData: LiveData<List<ItemWithCategory>>
         get() = _itemListWithCategoryLiveData
 
+    // Categories in the add/update item Screen
     private val _categoriesViewStateLiveData =
         MutableLiveData(CategoriesViewState())
     val categoriesViewStateLiveData: LiveData<CategoriesViewState>
         get() = _categoriesViewStateLiveData
+
+    // State in the home screen
+    private val _homeViewStateLiveData = MutableLiveData<HomeViewState>()
+    val homeViewStateLiveData: LiveData<HomeViewState>
+        get() = _homeViewStateLiveData
+
+    var currentSort = HomeViewState.Sort.NONE
+        /*set(value) {
+            field = value
+            updateHomeViewState(itemListWithCategoryLiveData.value!!)
+        }*/
 
     private val _transactionCompletedLiveData = MutableLiveData<Event<Boolean>>()
     val transactionCompletedLiveData: LiveData<Event<Boolean>>
@@ -65,8 +80,10 @@ class BaseViewModel(
     }
 
     private fun getAllItemWithCategory() = viewModelScope.launch {
-        getAllItemWithCategoryUseCase().collect { map ->
-            _itemListWithCategoryLiveData.postValue(map)
+        getAllItemWithCategoryUseCase().collect { list ->
+            _itemListWithCategoryLiveData.postValue(list)
+
+            updateHomeViewState(list)
         }
     }
 
@@ -150,5 +167,50 @@ class BaseViewModel(
 
         val viewState = CategoriesViewState(categoryItemList = viewStateItemList)
         _categoriesViewStateLiveData.postValue(viewState)
+    }
+
+    private fun updateHomeViewState(items: List<ItemWithCategory>) {
+
+        val dataList = ArrayList<HomeViewState.DataItem<*>>()
+        when(currentSort) {
+            HomeViewState.Sort.NONE -> {
+                var currentPriority = -1
+
+                items.sortedByDescending { it.item.priority }
+                    .forEach { item ->
+                        if (item.item.priority != currentPriority) {
+                            currentPriority = item.item.priority
+                            val headerItem = HomeViewState.DataItem(
+                                data = getHeaderTextForPriority(currentPriority),
+                                isHeader = true
+                            )
+                            dataList.add(headerItem)
+                        }
+
+                        val dataItem = HomeViewState.DataItem(data = item)
+                        dataList.add(dataItem)
+                    }
+            }
+            HomeViewState.Sort.CATEGORY -> TODO()
+            HomeViewState.Sort.OLDEST -> TODO()
+            HomeViewState.Sort.NEWEST -> TODO()
+        }
+
+        _homeViewStateLiveData.postValue(
+            HomeViewState(
+                dataItemList = dataList,
+                isLoading = false,
+                sortedBy = currentSort
+            )
+
+        )
+    }
+
+    private fun getHeaderTextForPriority(priority: Int): String {
+        return when (priority) {
+            1 -> "Low"
+            2 -> "Medium"
+            else -> "High"
+        }
     }
 }

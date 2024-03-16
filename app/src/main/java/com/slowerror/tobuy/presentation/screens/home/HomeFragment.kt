@@ -1,7 +1,6 @@
 package com.slowerror.tobuy.presentation.screens.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,8 +34,8 @@ class HomeFragment : BaseFragment(), ItemOnClickInterface {
         val epoxyController = HomeController(this)
         binding.epoxyRw.setController(epoxyController)
 
-        sharedViewModel.itemListWithCategoryLiveData.observe(viewLifecycleOwner) { itemList ->
-            epoxyController.itemList = itemList as ArrayList<ItemWithCategory>
+        sharedViewModel.homeViewStateLiveData.observe(viewLifecycleOwner) { state ->
+            epoxyController.viewState = state
         }
 
         EpoxyTouchHelper.initSwiping(binding.epoxyRw)

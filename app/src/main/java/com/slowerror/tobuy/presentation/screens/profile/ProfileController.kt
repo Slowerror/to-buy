@@ -34,7 +34,6 @@ class ProfileController(private val onCategoryEmptyStateClicked: () -> Unit) : E
     ) : ViewBindingKotlinModel<ModelCategoryBinding>(R.layout.model_category) {
         override fun ModelCategoryBinding.bind() {
             textView.text = category.name
-
         }
     }
 

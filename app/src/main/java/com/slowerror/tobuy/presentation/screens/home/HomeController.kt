@@ -9,7 +9,6 @@ import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.ModelEmptyStateBinding
 import com.slowerror.tobuy.databinding.ModelItemBinding
 import com.slowerror.tobuy.domain.model.Category
-import com.slowerror.tobuy.domain.model.Item
 import com.slowerror.tobuy.domain.model.ItemWithCategory
 import com.slowerror.tobuy.presentation.epoxy.LoadingEpoxyModel
 import com.slowerror.tobuy.presentation.epoxy.ViewBindingKotlinModel
@@ -19,53 +18,36 @@ class HomeController(
     private val itemOnClickInterface: ItemOnClickInterface
 ) : EpoxyController() {
 
-    private var isLoading: Boolean = true
+    var viewState = HomeViewState(isLoading = true)
         set(value) {
             field = value
-            if (field) {
-                requestModelBuild()
-            }
-        }
-
-    var itemList = ArrayList<ItemWithCategory>()
-        set(value) {
-            field = value
-            isLoading = false
             requestModelBuild()
         }
 
     override fun buildModels() {
-        if (isLoading) {
+        if (viewState.isLoading) {
             LoadingEpoxyModel().id("Loading_state").addTo(this)
             return
         }
 
-        if (itemList.isEmpty()) {
+        if (viewState.dataItemList.isEmpty()) {
             EmptyStateItemEpoxyModel().id("Empty_state").addTo(this)
             return
         }
 
-        var currentPriority = -1
-
-        itemList.sortedByDescending { it.item.priority }
-            .forEach { item ->
-                if (item.item.priority != currentPriority) {
-                    currentPriority = item.item.priority
-                    addHeaderModel(getHeaderTextForPriority(currentPriority))
-                }
-
-                ItemEpoxyModel(item, itemOnClickInterface)
-                    .id(item.item.id)
-                    .addTo(this)
+        viewState.dataItemList.forEach { item ->
+            if (item.isHeader) {
+                addHeaderModel(item.data as String)
+                return@forEach
             }
-    }
 
-    private fun getHeaderTextForPriority(priority: Int): String {
-        return when (priority) {
-            1 -> "Low"
-            2 -> "Medium"
-            else -> "High"
+            val itemWithCategory = item.data as ItemWithCategory
+
+            ItemEpoxyModel(itemWithCategory, itemOnClickInterface)
+                .id(itemWithCategory.item.id)
+                .addTo(this)
         }
+
     }
 
     data class ItemEpoxyModel(
