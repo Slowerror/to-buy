@@ -32,6 +32,7 @@ class SortOrderBottomSheetDialogFragment : BottomSheetDialogFragment() {
         Log.i("BottomSheet", "${HomeViewState.Sort.entries}")
         val epoxyController = BottomSheetController(HomeViewState.Sort.entries) {
             viewModel.currentSort = it
+            dismiss()
         }
 
         binding.bottomSheetRw.setControllerAndBuildModels(epoxyController)

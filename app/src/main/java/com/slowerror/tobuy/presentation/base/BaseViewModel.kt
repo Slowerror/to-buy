@@ -13,12 +13,9 @@ import com.slowerror.tobuy.domain.usecase.category_usecase.RemoveCategoryUseCase
 import com.slowerror.tobuy.domain.usecase.category_usecase.UpdateCategoryUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.AddItemUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.UpdateItemUseCase
-import com.slowerror.tobuy.domain.usecase.item_usecase.GetAllItemUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.GetAllItemWithCategoryUseCase
 import com.slowerror.tobuy.domain.usecase.item_usecase.RemoveItemUseCase
-import com.slowerror.tobuy.presentation.screens.home.HomeController
 import com.slowerror.tobuy.presentation.screens.home.HomeViewState
-import com.slowerror.tobuy.utils.addHeaderModel
 import kotlinx.coroutines.launch
 
 class BaseViewModel(
@@ -160,7 +157,7 @@ class BaseViewModel(
     private fun updateHomeViewState(items: List<ItemWithCategory>) {
 
         val dataList = ArrayList<HomeViewState.DataItem<*>>()
-        when(currentSort) {
+        when (currentSort) {
             HomeViewState.Sort.NONE -> {
                 var currentPriority = -1
 
@@ -179,9 +176,50 @@ class BaseViewModel(
                         dataList.add(dataItem)
                     }
             }
-            HomeViewState.Sort.CATEGORY -> TODO()
-            HomeViewState.Sort.OLDEST -> TODO()
-            HomeViewState.Sort.NEWEST -> TODO()
+
+            HomeViewState.Sort.CATEGORY -> {
+                var currentCategory = "-1"
+                items.sortedByDescending { it.category.name }.forEach { item ->
+                    if (item.item.categoryId != currentCategory) {
+                        currentCategory = item.item.categoryId
+                        val headerItem = HomeViewState.DataItem(
+                            data = item.category.name,
+                            isHeader = true
+                        )
+                        dataList.add(headerItem)
+                    }
+                    val dataItem = HomeViewState.DataItem(data = item)
+                    dataList.add(dataItem)
+                }
+
+
+            }
+
+            HomeViewState.Sort.OLDEST -> {
+                val headerItem = HomeViewState.DataItem(
+                    data = "Oldest",
+                    isHeader = true
+                )
+                dataList.add(headerItem)
+
+                items.sortedBy { it.item.createdAt }.forEach { item ->
+                    val dataItem = HomeViewState.DataItem(data = item)
+                    dataList.add(dataItem)
+                }
+            }
+
+            HomeViewState.Sort.NEWEST -> {
+                val headerItem = HomeViewState.DataItem(
+                    data = "Newest",
+                    isHeader = true
+                )
+                dataList.add(headerItem)
+
+                items.sortedByDescending { it.item.createdAt }.forEach { item ->
+                    val dataItem = HomeViewState.DataItem(data = item)
+                    dataList.add(dataItem)
+                }
+            }
         }
 
         _homeViewStateLiveData.postValue(
