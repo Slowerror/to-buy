@@ -22,7 +22,6 @@ import com.slowerror.tobuy.utils.addHeaderModel
 import kotlinx.coroutines.launch
 
 class BaseViewModel(
-    private val getAllItemUseCase: GetAllItemUseCase,
     private val removeItemUseCase: RemoveItemUseCase,
     private val addItemUseCase: AddItemUseCase,
     private val updateItemUseCase: UpdateItemUseCase,
@@ -32,10 +31,6 @@ class BaseViewModel(
     private val addCategoryUseCase: AddCategoryUseCase,
     private val updateCategoryUseCase: UpdateCategoryUseCase
 ) : ViewModel() {
-
-    /*private val _itemListLiveData = MutableLiveData<List<Item>>()
-    val itemListLiveData: LiveData<List<Item>>
-        get() = _itemListLiveData*/
 
     private val _categoryListLiveData = MutableLiveData<List<Category>>()
     val categoryListLiveData: LiveData<List<Category>>
@@ -57,28 +52,21 @@ class BaseViewModel(
         get() = _homeViewStateLiveData
 
     var currentSort = HomeViewState.Sort.NONE
-        /*set(value) {
+        set(value) {
             field = value
             updateHomeViewState(itemListWithCategoryLiveData.value!!)
-        }*/
+        }
 
     private val _transactionCompletedLiveData = MutableLiveData<Event<Boolean>>()
     val transactionCompletedLiveData: LiveData<Event<Boolean>>
         get() = _transactionCompletedLiveData
 
     init {
-//        getAllItems()
         getAllCategories()
         getAllItemWithCategory()
     }
 
     //region ItemEntity
-    private fun getAllItems() = viewModelScope.launch {
-        getAllItemUseCase().collect { items ->
-//            _itemListLiveData.postValue(items)
-        }
-    }
-
     private fun getAllItemWithCategory() = viewModelScope.launch {
         getAllItemWithCategoryUseCase().collect { list ->
             _itemListWithCategoryLiveData.postValue(list)

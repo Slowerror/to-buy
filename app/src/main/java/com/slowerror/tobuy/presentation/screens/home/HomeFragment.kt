@@ -2,14 +2,20 @@ package com.slowerror.tobuy.presentation.screens.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import com.airbnb.epoxy.EpoxyTouchHelper
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentHomeBinding
 import com.slowerror.tobuy.domain.model.Item
-import com.slowerror.tobuy.domain.model.ItemWithCategory
 import com.slowerror.tobuy.presentation.base.BaseFragment
+import com.slowerror.tobuy.presentation.screens.home.bottom_sheet.SortOrderBottomSheetDialogFragment
 
 class HomeFragment : BaseFragment(), ItemOnClickInterface {
 
@@ -53,7 +59,31 @@ class HomeFragment : BaseFragment(), ItemOnClickInterface {
                     sharedViewModel.removeItem(itemThatWasRemoved.item)
                 }
             })
+
+        menuOptions()
     }
+
+    private fun menuOptions() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_home_fragment, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.listSort -> {
+                        SortOrderBottomSheetDialogFragment().show(childFragmentManager, null)
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+
+        }, viewLifecycleOwner, Lifecycle.State.CREATED)
+
+    }
+
 
     override fun onResume() {
         super.onResume()

@@ -10,7 +10,7 @@ data class HomeViewState(
         val isHeader: Boolean = false
     )
 
-    enum class Sort(displayName: String) {
+    enum class Sort(val displayName: String) {
         NONE("NONE"),
         CATEGORY("CATEGORY"),
         OLDEST("OLDEST"),
