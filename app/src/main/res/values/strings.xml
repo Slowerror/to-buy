@@ -18,4 +18,5 @@
     <string name="exclamation_mark">!</string>
     <string name="sort">Sort</string>
     <string name="sort_order">Sort order</string>
+    <string name="color_picker_label">Low (R, G, B)</string>
 </resources>
