@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
-import com.airbnb.epoxy.EpoxyController
 import com.google.android.material.snackbar.Snackbar
 import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentAddItemBinding
@@ -126,7 +125,7 @@ class AddItemFragment : BaseFragment() {
         sharedViewModel.transactionCompletedLiveData.observe(viewLifecycleOwner) { event ->
             event.getContent()?.let {
                 if (isInEditMode) {
-                    navigateBack()
+                    navigateUp()
                     return@observe
                 }
 

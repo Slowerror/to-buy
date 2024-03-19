@@ -6,10 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.navigation.fragment.navArgs
+import com.slowerror.tobuy.R
 import com.slowerror.tobuy.databinding.FragmentCustomColorPickerBinding
 import com.slowerror.tobuy.presentation.base.BaseFragment
+import com.slowerror.tobuy.utils.SharedPrefUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 class CustomColorPickerFragment : BaseFragment() {
 
@@ -31,20 +35,24 @@ class CustomColorPickerFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setPriority(safeArgs.priorityName)
+        viewModel.setPriority(safeArgs.priorityName) { red, green, blue ->
+            binding.redColorLabel.colorSeekBar.progress = red
+            binding.greenColorLabel.colorSeekBar.progress = green
+            binding.blueColorLabel.colorSeekBar.progress = blue
+        }
 
         binding.redColorLabel.apply {
-            colorNameTextView.text = "Red"
+            colorNameTextView.text = getString(R.string.red_color_name)
             colorSeekBar.setOnSeekBarChangeListener(SeekBarListener(viewModel::onRedChange))
         }
 
         binding.greenColorLabel.apply {
-            colorNameTextView.text = "Green"
+            colorNameTextView.text = getString(R.string.green_color_name)
             colorSeekBar.setOnSeekBarChangeListener(SeekBarListener(viewModel::onGreenChange))
         }
 
         binding.blueColorLabel.apply {
-            colorNameTextView.text = "Blue"
+            colorNameTextView.text = getString(R.string.blue_color_name)
             colorSeekBar.setOnSeekBarChangeListener(SeekBarListener(viewModel::onBlueChange))
         }
 
@@ -54,6 +62,21 @@ class CustomColorPickerFragment : BaseFragment() {
             val color = Color.rgb(state.red, state.green, state.blue)
 
             binding.colorView.setBackgroundColor(color)
+        }
+
+        binding.saveColorButton.setOnClickListener {
+            val viewState = viewModel.viewStateLiveData.value ?: return@setOnClickListener
+
+            val color = Color.rgb(viewState.red, viewState.green, viewState.blue)
+
+            when(safeArgs.priorityName.lowercase()) {
+                "low" -> { SharedPrefUtil.setLowPriorityColor(color) }
+                "medium" -> { SharedPrefUtil.setMediumPriorityColor(color) }
+                "high" -> { SharedPrefUtil.setHighPriorityColor(color) }
+            }
+
+            Toast.makeText(requireContext(), "Color was saved!", Toast.LENGTH_SHORT).show()
+            navigateUp()
         }
     }
 
@@ -69,13 +92,9 @@ class CustomColorPickerFragment : BaseFragment() {
             onProgressChange(progress)
         }
 
-        override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            TODO("Not yet implemented")
-        }
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-        override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            TODO("Not yet implemented")
-        }
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 
     }
 }

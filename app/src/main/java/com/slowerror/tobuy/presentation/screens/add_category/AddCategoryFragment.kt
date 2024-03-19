@@ -27,7 +27,7 @@ class AddCategoryFragment : BaseFragment() {
 
         sharedViewModel.transactionCompletedLiveData.observe(viewLifecycleOwner) { event ->
             event.getContent()?.let {
-                navigateBack()
+                navigateUp()
             }
         }
 

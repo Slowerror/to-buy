@@ -19,7 +19,7 @@ abstract class BaseFragment : Fragment() {
         findNavController().navigate(navDirections)
     }
 
-    protected fun navigateBack() {
+    protected fun navigateUp() {
         findNavController().popBackStack()
     }
 

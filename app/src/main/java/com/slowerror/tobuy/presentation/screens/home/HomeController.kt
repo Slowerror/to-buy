@@ -12,6 +12,7 @@ import com.slowerror.tobuy.domain.model.Category
 import com.slowerror.tobuy.domain.model.ItemWithCategory
 import com.slowerror.tobuy.presentation.epoxy.LoadingEpoxyModel
 import com.slowerror.tobuy.presentation.epoxy.ViewBindingKotlinModel
+import com.slowerror.tobuy.utils.SharedPrefUtil
 import com.slowerror.tobuy.utils.addHeaderModel
 
 class HomeController(
@@ -68,16 +69,15 @@ class HomeController(
             categoryTextView.text =
                 if (item.category.id == Category.DEFAULT_CATEGORY_ID) "" else item.category.name
 
-            val colorRes = when (item.item.priority) {
-                1 -> android.R.color.holo_green_dark
-                2 -> android.R.color.holo_orange_dark
-                3 -> android.R.color.holo_red_dark
-                else -> android.R.color.background_dark
+            val color = when (item.item.priority) {
+                1 -> SharedPrefUtil.getLowPriorityColor()
+                2 -> SharedPrefUtil.getMediumPriorityColor()
+                3 -> SharedPrefUtil.getHighPriorityColor()
+                else -> com.google.android.material.R.color.material_blue_grey_800
             }
 
 
             with(priorityTextView) {
-                val color = ContextCompat.getColor(root.context, colorRes)
                 setBackgroundColor(color)
                 root.setStrokeColor(ColorStateList.valueOf(color))
                 setOnClickListener {

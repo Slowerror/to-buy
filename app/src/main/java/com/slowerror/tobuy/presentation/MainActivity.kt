@@ -12,6 +12,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.slowerror.tobuy.R
+import com.slowerror.tobuy.utils.SharedPrefUtil
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setupNavigateUp()
-
+        SharedPrefUtil.init(this)
     }
 
     private fun setupNavigateUp() {

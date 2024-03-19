@@ -10,24 +10,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:layout_constraintHorizontal_weight="1"
         android:gravity="center"
         android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/colorSeekBar"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Red" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.30" />
 
     <SeekBar
         android:id="@+id/colorSeekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        app:layout_constraintHorizontal_weight="5"
+        android:max="255"
+        android:min="0"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="@id/colorNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/colorNameTextView"
+        app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toTopOf="@id/colorNameTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,4 +19,7 @@
     <string name="sort">Sort</string>
     <string name="sort_order">Sort order</string>
     <string name="color_picker_label">Low (R, G, B)</string>
+    <string name="red_color_name">Red</string>
+    <string name="green_color_name">Green</string>
+    <string name="blue_color_name">Blue</string>
 </resources>

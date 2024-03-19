@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/CustomizationFragment"
         android:name="com.slowerror.tobuy.presentation.screens.customization.CustomizationFragment"
-        android:label="Profile"
+        android:label="Customization"
         tools:layout="@layout/fragment_customization">
 
         <action
