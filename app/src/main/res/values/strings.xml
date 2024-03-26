@@ -22,4 +22,6 @@
     <string name="red_color_name">Red</string>
     <string name="green_color_name">Green</string>
     <string name="blue_color_name">Blue</string>
+    <string name="home">Home</string>
+    <string name="customization">Customization</string>
 </resources>

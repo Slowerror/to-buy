@@ -1,7 +1,6 @@
 package com.slowerror.tobuy.presentation.screens.home
 
 import android.content.res.ColorStateList
-import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyController

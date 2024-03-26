@@ -13,7 +13,6 @@ import com.slowerror.tobuy.databinding.FragmentCustomColorPickerBinding
 import com.slowerror.tobuy.presentation.base.BaseFragment
 import com.slowerror.tobuy.utils.SharedPrefUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Locale
 
 class CustomColorPickerFragment : BaseFragment() {
 

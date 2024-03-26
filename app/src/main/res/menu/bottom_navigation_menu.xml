@@ -5,12 +5,12 @@
         android:id="@+id/homeFragment"
         android:enabled="true"
         android:icon="@drawable/ic_home_24"
-        android:title="Home" />
+        android:title="@string/home" />
 
     <item
         android:id="@+id/CustomizationFragment"
         android:enabled="true"
         android:icon="@drawable/ic_customization_24"
-        android:title="Customization" />
+        android:title="@string/customization" />
 
 </menu>
